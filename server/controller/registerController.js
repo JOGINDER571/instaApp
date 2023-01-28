@@ -182,22 +182,22 @@ const unfollow = async (request, response) => {
     } else {
       return response.status(401).json({ error });
     }
-    const followingUpdate = await user.findByIdAndUpdate(
-      request.user._id,
-      {
-        $pull: { following: request.body.unfollowId },
-      },
-      { new: true }
-    );
-    if (followingUpdate) {
-      return response.status(201).json({
-        success: true,
-        data: followingUpdate,
-        message: "updated",
-      });
-    } else {
-      return response.status(401).json({ error });
-    }
+    // const followingUpdate = await user.findByIdAndUpdate(
+    //   request.user._id,
+    //   {
+    //     $pull: { following: request.body.unfollowId },
+    //   },
+    //   { new: true }
+    // );
+    // if (followingUpdate) {
+    //   return response.status(201).json({
+    //     success: true,
+    //     data: followingUpdate,
+    //     message: "updated",
+    //   });
+    // } else {
+    //   return response.status(401).json({ error });
+    // }
 
 
   } catch (error) {
