@@ -162,6 +162,7 @@ const follow = async (request, response) => {
     return response.status(401).json({ error });
   }
 };
+
 //if user unfollow the user
 const unfollow = async (request, response) => {
   try {
