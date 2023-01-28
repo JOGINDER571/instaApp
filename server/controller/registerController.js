@@ -121,88 +121,71 @@ const deleteUser = async (request, response) => {
     return response.status(401).json({ error });
   }
 };
+
 //if user follow the user
-const follow = async (request, response) => {
-  try {
-    const followerUpdate = await user.findByIdAndUpdate(
-      request.body.followId,
-      {
-        $push: { followers: request.user._id },
-      },
-      { new: true }
-    );
-    if (followerUpdate) {
-      return response.status(201).json({
-        success: true,
-        data: followerUpdate,
-        message: "updated",
-      });
-    } else {
-      return response.status(401).json({ error });
+const follow = (request, response) => {
+  user.findByIdAndUpdate(
+    req.body.followId,
+    {
+      $push: { followers: req.user._id },
+    },
+    {
+      new: true,
+    },
+    (err, result) => {
+      if (err) {
+        return res.status(422).json({ error: err });
+      }
+      user
+        .findByIdAndUpdate(
+          req.user._id,
+          {
+            $push: { following: req.body.followId },
+          },
+          { new: true }
+        )
+        .select("-password")
+        .then((result) => {
+          res.json(result);
+        })
+        .catch((err) => {
+          return res.status(422).json({ error: err });
+        });
     }
-    const followingUpdate = await user.findByIdAndUpdate(
-      request.user._id,
-      {
-        $push: { following: request.body.followId },
-      },
-      { new: true }
-    );
-    if (followingUpdate) {
-      return response.status(201).json({
-        success: true,
-        data: followingUpdate,
-        message: "updated",
-      });
-    } else {
-      return response.status(401).json({ error });
-    }
-
-
-  } catch (error) {
-    return response.status(401).json({ error });
-  }
+  );
 };
 
 //if user unfollow the user
 const unfollow = async (request, response) => {
-  try {
-    const followerUpdate = await user.findByIdAndUpdate(
-      request.body.unfollowId,
-      {
-        $pull: { followers: request.user._id },
-      },
-      { new: true }
-    );
-    if (followerUpdate) {
-      return response.status(201).json({
-        success: true,
-        data: followerUpdate,
-        message: "updated",
-      });
-    } else {
-      return response.status(401).json({ error });
+  user.findByIdAndUpdate(
+    req.body.unfollowId,
+    {
+      $pull: { followers: req.user._id },
+    },
+    {
+      new: true,
+    },
+    (err, result) => {
+      if (err) {
+        return res.status(422).json({ error: err });
+      }
+      user
+        .findByIdAndUpdate(
+          req.user._id,
+          {
+            $pull: { following: req.body.unfollowId },
+          },
+          { new: true }
+        )
+        .select("-password")
+        .then((result) => {
+          res.json(result);
+        })
+        .catch((err) => {
+          return res.status(422).json({ error: err });
+        });
     }
-    // const followingUpdate = await user.findByIdAndUpdate(
-    //   request.user._id,
-    //   {
-    //     $pull: { following: request.body.unfollowId },
-    //   },
-    //   { new: true }
-    // );
-    // if (followingUpdate) {
-    //   return response.status(201).json({
-    //     success: true,
-    //     data: followingUpdate,
-    //     message: "updated",
-    //   });
-    // } else {
-    //   return response.status(401).json({ error });
-    // }
-
-
-  } catch (error) {
-    return response.status(401).json({ error });
-  }
+  );
 };
 
 //middleware
@@ -218,5 +201,5 @@ export {
   deleteUser,
   protectedRoute,
   follow,
-  unfollow
+  unfollow,
 };
