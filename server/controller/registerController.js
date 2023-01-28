@@ -6,7 +6,7 @@ const createUser = async (request, response) => {
   console.log(request.body);
   try {
     const { username, email, password } = request.body;
-    if (!username || !phone || !email || !password) {
+    if (!username || !email || !password) {
       return response.status(401).json({ error: "fill the form properly" });
     }
     const isUserExist = await user.findOne({ email });
@@ -14,12 +14,12 @@ const createUser = async (request, response) => {
     if (isUserExist) {
       return response
         .status(401)
-        .json({ error: "Your Email is Not Verified yet" });
+        .json({ error: "Your Email is already exist" }); 
     }
     //hashing
     const salt = bcrypt.genSaltSync();
     const secure = await bcrypt.hash(password, salt);
-    const userDetails = { username, email, phone, password: secure };
+    const userDetails = { username, email, password: secure };
     const newEntry = await user.updateMany({ email }, userDetails);
 
     const addEntry = await user.create({
