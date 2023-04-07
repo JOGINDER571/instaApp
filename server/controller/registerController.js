@@ -33,7 +33,7 @@ const createUser = async (request, response) => {
       return response.status(201).json({
         success: true,
         data: userDetails,
-        message: "created",
+        message: "Successfully Register",
       });
     } else {
       return response.status(400).json({

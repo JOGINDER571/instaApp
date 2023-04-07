@@ -3,14 +3,15 @@ import posts from "../model/postModel.js";
 
 const createPost = async (request, response) => {
   try {
-    const { title, body } = request.body;
-    if (!title || !body) {
+    const { title, body,pic } = request.body;
+    if (!title || !body || !pic) {
       return response.status(422).json({ error: "fill properly" });
     }
-    request.user.password = undefined;
+    // request.user.password = undefined;
     const addPost = await posts.create({
       title,
       body,
+      pic,
       postedby: request.user,
     });
     console.log(addPost);
@@ -63,7 +64,7 @@ const createPost = async (request, response) => {
             }
             return response.status(201).json({message:"deleted successfully"});
     
-        } catch (error) {
+        } catch (error) { 
             return response.status(401).json({error:"wrong something"});
         }
     };

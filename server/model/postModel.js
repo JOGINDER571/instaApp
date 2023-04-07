@@ -3,13 +3,15 @@ const {ObjectId}=mongoose.Schema.Types;
 const postSchema=new mongoose.Schema({
     title:{
         type:String,
+        require:true,
     },
     body:{
         type:String,
+        require:true,
     },
-    image:{
+    pic:{
         type:String,
-        default:"no image",
+        require:true,
     },
     postedby:{
         type:ObjectId,

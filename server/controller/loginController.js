@@ -15,7 +15,7 @@ const login = async (request, response) => {
         password,
         isUserExist.password
       );
-      console.log(checkPassword);
+      // console.log(checkPassword);
       if (!checkPassword) {
         return response.status(401).json({ error: "check your details" });
       }
@@ -27,17 +27,19 @@ const login = async (request, response) => {
       let token = "";
       token = jwt.sign(data, key);
       //add token to the database
-      console.log(token);
+      // console.log(token);
       const addToken = await user.findByIdAndUpdate(
         { _id: isUserExist._id },
         { token }
       );
       const userOne = await user.findOne({ _id: isUserExist._id });
+      console.log("userone",userOne);
+      const {_id,username,email,followers,following} = userOne;
       if (addToken) {
         return response
           .status(201)
           .cookie("Authentication_token", token)
-          .json({ message: "You have Successfully LogedIn !", data: userOne });
+          .json({ message: "You have Successfully LogedIn !", token,user:{_id,username,email,followers,following} ,success:true });
       } else {
         response.status(401).json({ error: " Login Process failed !" });
       }

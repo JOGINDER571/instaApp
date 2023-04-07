@@ -21,7 +21,7 @@ router.route("/login").post(login);
 
 //post route
 router.route("/createpost").post(reqLogin,createPost);
-router.route("/getposts").get(getAllPost);
+router.route("/getposts").get(reqLogin,getAllPost);
 router.route("/mypost").get(reqLogin,myPost);
 router.route("/deletepost/:id").delete(deletePost);
 export default router;
