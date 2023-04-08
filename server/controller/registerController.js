@@ -1,16 +1,15 @@
 import user from "../model/userModel.js";
 import bcrypt from "bcryptjs";
-import { request, response } from "express";
 // create api
 const createUser = async (request, response) => {
   console.log(request.body);
   try {
-    const { username, email, password } = request.body;
-    if (!username || !email || !password) {
+    const { username, email, password,pic } = request.body;
+    if (!username || !email || !password ||!pic) {
       return response.status(401).json({ error: "fill the form properly" });
     }
-    const isUserExist = await user.findOne({ email });
-    console.log("fgd", isUserExist);
+    const isUserExist = await user.findOne({ email });  
+    // console.log("fgd", isUserExist);
     if (isUserExist) {
       return response
         .status(401)
@@ -19,13 +18,14 @@ const createUser = async (request, response) => {
     //hashing
     const salt = bcrypt.genSaltSync();
     const secure = await bcrypt.hash(password, salt);
-    const userDetails = { username, email, password: secure };
+    const userDetails = { username, email, password: secure ,pic};
     const newEntry = await user.updateMany({ email }, userDetails);
 
     const addEntry = await user.create({
       username,
       email,
       password: secure,
+      pic
     });
 
     console.log(newEntry);
@@ -122,71 +122,6 @@ const deleteUser = async (request, response) => {
   }
 };
 
-//if user follow the user
-const follow = (request, response) => {
-  user.findByIdAndUpdate(
-    req.body.followId,
-    {
-      $push: { followers: req.user._id },
-    },
-    {
-      new: true,
-    },
-    (err, result) => {
-      if (err) {
-        return res.status(422).json({ error: err });
-      }
-      user
-        .findByIdAndUpdate(
-          req.user._id,
-          {
-            $push: { following: req.body.followId },
-          },
-          { new: true }
-        )
-        .select("-password")
-        .then((result) => {
-          res.json(result);
-        })
-        .catch((err) => {
-          return res.status(422).json({ error: err });
-        });
-    }
-  );
-};
-
-//if user unfollow the user
-const unfollow = async (request, response) => {
-  user.findByIdAndUpdate(
-    req.body.unfollowId,
-    {
-      $pull: { followers: req.user._id },
-    },
-    {
-      new: true,
-    },
-    (err, result) => {
-      if (err) {
-        return res.status(422).json({ error: err });
-      }
-      user
-        .findByIdAndUpdate(
-          req.user._id,
-          {
-            $pull: { following: req.body.unfollowId },
-          },
-          { new: true }
-        )
-        .select("-password")
-        .then((result) => {
-          res.json(result);
-        })
-        .catch((err) => {
-          return res.status(422).json({ error: err });
-        });
-    }
-  );
-};
 
 //middleware
 const protectedRoute = async (request, response) => {
@@ -200,6 +135,4 @@ export {
   updateUser,
   deleteUser,
   protectedRoute,
-  follow,
-  unfollow,
 };

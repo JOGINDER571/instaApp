@@ -8,6 +8,8 @@ import CretePost from "./components/screens/CreatePost";
 import "./App.css";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { reducer, initialState } from "./reducers/userReducer";
+import UserProfile from "./components/screens/UserProfile";
+import UserFollowing from "./components/screens/UserFollowing";
 export const UserContext = createContext();
 
 const Routing = () => {
@@ -25,10 +27,12 @@ const Routing = () => {
   return (
     <Routes>
     <Route path="/" element={<Home />} />
-    <Route path="/profile" element={<Profile />} />
+    <Route exact path="/profile" element={<Profile />} />
+    <Route path="/profile/:id" element={<UserProfile />} />
     <Route path="/login" element={<Login />} />
     <Route path="/signup" element={<Signup />} />
     <Route path="/create" element={<CretePost />} />
+    <Route path="/userfollowing" element={<UserFollowing />} />
   </Routes>
   )
 };

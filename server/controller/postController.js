@@ -13,7 +13,7 @@ const createPost = async (request, response) => {
       pic,
       postedby: request.user,
     });
-    console.log(addPost);
+    // console.log(addPost);
     if (addPost) {
       return response.status(201).json({
         success: true,
@@ -48,13 +48,33 @@ const getAllPost = async (request, response) => {
     response.status(400).json({ error });
   }
 };
+// get all posts
+const getAllSubPost = async (request, response) => {
+  try {
+    const allPosts = await posts.find({postedby:{$in:request.user.following}}).populate("postedby", "_id username").populate("comments.postedby", "_id username");
+    //   console.log(users);
+    if (allPosts.length > 0) {
+      response.status(200).json({
+        success: true,
+        data: allPosts,
+      });
+    } else {
+      response.status(400).json({
+        success: false,
+        data: "no post found",
+      });
+    }
+  } catch (error) {
+    response.status(400).json({ error });
+  }
+};
 
 // delete post
 
 const deletePost = async (request, response) => {
   posts.findOne({_id:request.params.id})
     .populate("postedby","_id")
-    .exec((err,post)=>{
+    .exec((err,post)=>{ 
         if(err || !post){
             return response.status(422).json({error:err})
         }
@@ -67,25 +87,14 @@ const deletePost = async (request, response) => {
               })
         }
     })
-  // const _id = request.params.id;
-  // console.log(_id);
-  // try {
-  //   const del = await posts.findOne(_id).populate("postedBy","_id");
-  //   console.log(del);
-  //   if (!del) {
-  //     return response.status(401).json({ error: "process failed" });
-  //   }
-  //   return response.status(201).json({ message: "deleted successfully" });
-  // } catch (error) {
-  //   return response.status(401).json({ error: "wrong something" });
-  // }
+
 };
 const myPost = async (request, response) => {
   try {
     const allMyPost = await posts
       .find({ postedby: request.user._id })
       .populate("postedby", "_id username");
-    console.log("allMyPost", allMyPost);
+    // console.log("allMyPost", allMyPost);
     if (allMyPost.length > 0) {
       response.status(200).json({
         success: true,
@@ -189,4 +198,5 @@ const commentPost = async (request, response) => {
 };
 
 
-export { createPost, getAllPost, deletePost, myPost,likePost,unlikePost,commentPost };
+
+export { createPost, getAllPost, deletePost, myPost,likePost,unlikePost,commentPost,getAllSubPost };

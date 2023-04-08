@@ -34,12 +34,12 @@ const login = async (request, response) => {
       );
       const userOne = await user.findOne({ _id: isUserExist._id });
       console.log("userone",userOne);
-      const {_id,username,email,followers,following} = userOne;
+      const {_id,username,email,followers,following,pic} = userOne;
       if (addToken) {
         return response
           .status(201)
           .cookie("Authentication_token", token)
-          .json({ message: "You have Successfully LogedIn !", token,user:{_id,username,email,followers,following} ,success:true });
+          .json({ message: "You have Successfully LogedIn !", token,user:{_id,username,email,followers,following,pic} ,success:true });
       } else {
         response.status(401).json({ error: " Login Process failed !" });
       }

@@ -1,10 +1,11 @@
 import React, { useState, useEffect,useContext } from "react";
 import {UserContext} from "../../App";
 const Profile = () => {
-  // const [image, setImage] = useState("");
   const [mypics, setPics] = useState([]);
   const {state,dispatch} =useContext(UserContext);
+  const [image,setImage]=useState("");
   // console.log("st",state);
+
   useEffect(() => {
     fetch("/mypost", {
       headers: {
@@ -19,6 +20,44 @@ const Profile = () => {
         }
       });
   },[]);
+  // 
+  // update pic
+  useEffect(()=>{
+    if(image){
+      const data = new FormData();
+      data.append("file", image);
+      data.append("upload_preset", "insta-clone");
+      data.append("cloud_name", "dnijugslc");
+      fetch(
+        `https://api.cloudinary.com/v1_1/dnijugslc/image/upload`,
+        {
+          method: "POST",
+          body: data,
+        }
+      ).then(res=>res.json()).then(data=>{
+        //
+        fetch("/updatepic",{
+          method:"put",
+          headers:{
+            "Content-Type":"application/json",
+            "Authorization":"Bearer "+localStorage.getItem("jwt")
+          },
+          body:JSON.stringify({
+            pic:data.url
+          })
+        }).then(res=>res.json()).then(result=>{
+          console.log(result);
+          dispatch({type:"UPDATEPIC",payload:result.pic});
+          localStorage.setItem("user",JSON.stringify({...state,pic:result.pic}));
+        })
+      })
+    }
+  },[image]);
+
+  const updatePhoto=(file)=>{
+    setImage(file);
+  }
+
   return (
     <div style={{ maxWidth: "550px", margin: "0px auto" }}>
       <div
@@ -36,7 +75,8 @@ const Profile = () => {
           <div>
             <img
               style={{ width: "160px", height: "160px", borderRadius: "80px" }}
-              // src={state ? state.pic : "loading"}
+              src={state ? state.pic : "loading"}
+              alt="no img"
             />
           </div>
           <div>
@@ -61,7 +101,7 @@ const Profile = () => {
             <span>Update pic</span>
             <input
               type="file"
-              // onChange={(e) => updatePhoto(e.target.files[0])}
+              onChange={(e) => updatePhoto(e.target.files[0])}
             />
           </div>
           <div className="file-path-wrapper">
