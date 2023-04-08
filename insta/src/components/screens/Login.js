@@ -28,7 +28,7 @@ const Login = () => {
         localStorage.setItem("jwt", res.token);
         localStorage.setItem("user", JSON.stringify(res.user));
         dispatch({type:"USER",payload:res.user});
-        console.log(res);
+        // console.log(res);
         M.toast({
           html: "Login Successfully",
           classes: "#2e7d32 green darken-3",
@@ -62,7 +62,7 @@ const Login = () => {
           Login
         </button>
         <h5>
-          <Link to="/signup">Dont have an account ?</Link>
+          <Link to="/signup">Do not have an account ?</Link>
         </h5>
         <h6>
           <Link to="/reset">Forgot password ?</Link>

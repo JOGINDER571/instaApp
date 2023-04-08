@@ -1,14 +1,12 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
 const Navbar = () => {
   const { state, dispatch } = useContext(UserContext);
+  const navigate=useNavigate();
   const renderList = () => {
     if (state) {
       return [
-        // <li>
-        //   <Link to="/create">CreatePost</Link>
-        // </li>,
         <li>
           <Link to="/create">CreatePost</Link>
         </li>,
@@ -16,7 +14,16 @@ const Navbar = () => {
           <Link to="/profile">Profile</Link>
         </li>,
         <li>
-          <Link to="/logout">Logout</Link>
+          <button
+          className="btn waves-effect waves-light #64b5f6 blue darken-1"
+          onClick={() => {
+            localStorage.clear();
+            dispatch({type:"CLEAR"});
+            navigate("/login")
+          }}
+        >
+          Logout
+        </button>
         </li>
       ];
     } else {

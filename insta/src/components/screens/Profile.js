@@ -1,8 +1,24 @@
-import React,{useState} from "react";
-
+import React, { useState, useEffect,useContext } from "react";
+import {UserContext} from "../../App";
 const Profile = () => {
-  const [image,setImage] = useState("");
-const [mypics,setPics] = useState([]);
+  // const [image, setImage] = useState("");
+  const [mypics, setPics] = useState([]);
+  const {state,dispatch} =useContext(UserContext);
+  // console.log("st",state);
+  useEffect(() => {
+    fetch("/mypost", {
+      headers: {
+        "Authorization":"Bearer "+localStorage.getItem("jwt")
+      },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        if(result.success){
+          setPics(result.data);
+        }
+      });
+  },[]);
   return (
     <div style={{ maxWidth: "550px", margin: "0px auto" }}>
       <div
@@ -24,8 +40,8 @@ const [mypics,setPics] = useState([]);
             />
           </div>
           <div>
-            {/* <h4>{state ? state.name : "loading"}</h4>
-            <h5>{state ? state.email : "loading"}</h5> */}
+            <h4>{state ? state.username : "loading"}</h4>
+            <h5>{state ? state.email : "loading"}</h5>
             <div
               style={{
                 display: "flex",
@@ -34,8 +50,8 @@ const [mypics,setPics] = useState([]);
               }}
             >
               <h6>{mypics.length} posts</h6>
-              {/* <h6>{state ? state.followers.length : "0"} followers</h6>
-              <h6>{state ? state.following.length : "0"} following</h6> */}
+              <h6>{state ? state.followers.length : "0"} followers</h6>
+              <h6>{state ? state.following.length : "0"} following</h6>
             </div>
           </div>
         </div>
@@ -54,16 +70,16 @@ const [mypics,setPics] = useState([]);
         </div>
       </div>
       <div className="gallery">
-        {mypics.map((item) => {
+        {mypics?.length!=0 ? mypics.map((item) => {
           return (
             <img
               key={item._id}
               className="item"
-              src={item.photo}
+              src={item.pic}
               alt={item.title}
             />
           );
-        })}
+        }):<><p>No Post found</p></>}
       </div>
     </div>
   );

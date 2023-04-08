@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 const reqLogin = (req,res,next)=>{
  const {authorization}=req.headers;
- console.log(authorization);
+//  console.log("autho",authorization);
  if(!authorization){
     return res.status(401).json({error:"you must be logged in"});
  }
@@ -15,10 +15,10 @@ const reqLogin = (req,res,next)=>{
         return res.status(401).json({error:"you must be logged in"});
     }
     const {id}=payload;
-    console.log("requser",payload);
+    // console.log("requser",payload);
     
     user.findById(id).then((userData)=>{
-        console.log("userdata",userData);
+        // console.log("userdata",userData);
         req.user=userData;
         next();
     })
