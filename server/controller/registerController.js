@@ -1,15 +1,23 @@
 import user from "../model/userModel.js";
 import bcrypt from "bcryptjs";
+// import nodemailer from "nodemailer";
+// import sendgridTransport from "nodemailer-sendgrid-transport";
+//mail
+// const transport=nodemailer.createTransport(sendgridTransport({
+//   auth :{
+//     api_key:"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"
+//   }
+// }))
 // create api
 const createUser = async (request, response) => {
   console.log(request.body);
   try {
     const { username, email, password,pic } = request.body;
-    if (!username || !email || !password ||!pic) {
+    if (!username || !email || !password) {
       return response.status(401).json({ error: "fill the form properly" });
     }
     const isUserExist = await user.findOne({ email });  
-    // console.log("fgd", isUserExist);
+    console.log("fgd", isUserExist);
     if (isUserExist) {
       return response
         .status(401)
@@ -28,8 +36,14 @@ const createUser = async (request, response) => {
       pic
     });
 
-    console.log(newEntry);
+    console.log(newEntry); 
     if (userDetails) {
+      // transport.sendMail({
+      //   to:userDetails.email,
+      //   from:"no-reply@insta.com",
+      //   subject:"Registration Successfully",
+      //   html:"<h1>Welcome to insta app</h1>"
+      // })
       return response.status(201).json({
         success: true,
         data: userDetails,
@@ -44,7 +58,8 @@ const createUser = async (request, response) => {
     response.status(401).json({ error: "out error" });
   }
 };
-
+// xsmtpsib-92e7352d42408e4414b7e8bd13c4f13a2a1b8c1fa1bf285c829b18c3091c79cd-zfm1nhHAJcSIda0r
+// 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
 // get all users
 const getUsers = async (request, response) => {
   try {

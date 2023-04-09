@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
     },
     pic:{
         type:String,
+        default:"https://res.cloudinary.com/dnijugslc/image/upload/v1681009711/top6_mfpscl.jpg",
     },
     token:{
         type:String,

@@ -8,7 +8,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [image, setImage] = useState("");
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState(undefined);
   const navigate=useNavigate();
 
   useEffect(()=>{
@@ -47,7 +47,7 @@ const Signup = () => {
         username,
         password,
         email,
-        pic:url
+        pic:url,
       })
     });
     const res=await makeReq.json();
