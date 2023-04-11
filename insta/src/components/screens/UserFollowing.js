@@ -1,4 +1,3 @@
-
 import React,{useState,useEffect,useContext} from 'react'
 import {Link} from 'react-router-dom';
 import { UserContext } from '../../App';
@@ -111,7 +110,7 @@ const UserFollowing = () => {
   }
     return (
     <div className="home">
-      {data.map((item) => {
+      {data.length!=0 ? data.map((item) => {
         return (
           <div className="card home-card" key={item._id}>
             <h5 style={{ padding: "5px" }}>
@@ -188,7 +187,7 @@ const UserFollowing = () => {
             </div>
           </div>
         );
-      })} 
+      }):<><h2 style={{textAlign:"center"}}>You are not following Anyone..</h2></>} 
     </div>
   );
 };

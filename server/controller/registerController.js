@@ -1,5 +1,6 @@
 import user from "../model/userModel.js";
 import bcrypt from "bcryptjs";
+
 // import nodemailer from "nodemailer";
 // import sendgridTransport from "nodemailer-sendgrid-transport";
 //mail
@@ -8,7 +9,9 @@ import bcrypt from "bcryptjs";
 //     api_key:"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"
 //   }
 // }))
+
 // create api
+
 const createUser = async (request, response) => {
   console.log(request.body);
   try {
@@ -43,7 +46,7 @@ const createUser = async (request, response) => {
       //   from:"no-reply@insta.com",
       //   subject:"Registration Successfully",
       //   html:"<h1>Welcome to insta app</h1>"
-      // })
+      // })  
       return response.status(201).json({
         success: true,
         data: userDetails,
