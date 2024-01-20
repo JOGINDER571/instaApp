@@ -1,74 +1,77 @@
 import React, { useState, useEffect } from "react";
-import M from 'materialize-css'
-import {useNavigate} from 'react-router-dom'
+import M from "materialize-css";
+import { useNavigate } from "react-router-dom";
 const CretePost = () => {
   // const history = useHistory()
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [image, setImage] = useState("");
   const [url, setUrl] = useState("");
-const navigate=useNavigate();
+  const navigate = useNavigate();
 
-//   useEffect(()=>{
-//      if(url){
-//       fetch("/createpost",{
-//           method:"post",
-//           headers:{
-//               "Content-Type":"application/json",
-//               "Authorization":"Bearer "+localStorage.getItem("jwt")
-//           },
-//           body:JSON.stringify({
-//               title,
-//               body,
-//               pic:url
-//           })
-//       }).then(res=>res.json())
-//       .then(data=>{
-//         console.log(data);
-//          if(data.error){
-//             M.toast({html: data.error,classes:"#c62828 red darken-3"})
-//          }
-//          else{
-//              M.toast({html:"Created post Successfully",classes:"#43a047 green darken-1"})
-//              navigate('/');
-//          }
-//       }).catch(err=>{
-//           console.log(err)
-//       })
-//   }
-//   },[url])
+  //   useEffect(()=>{
+  //      if(url){
+  //       fetch("/createpost",{
+  //           method:"post",
+  //           headers:{
+  //               "Content-Type":"application/json",
+  //               "Authorization":"Bearer "+localStorage.getItem("jwt")
+  //           },
+  //           body:JSON.stringify({
+  //               title,
+  //               body,
+  //               pic:url
+  //           })
+  //       }).then(res=>res.json())
+  //       .then(data=>{
+  //         console.log(data);
+  //          if(data.error){
+  //             M.toast({html: data.error,classes:"#c62828 red darken-3"})
+  //          }
+  //          else{
+  //              M.toast({html:"Created post Successfully",classes:"#43a047 green darken-1"})
+  //              navigate('/');
+  //          }
+  //       }).catch(err=>{
+  //           console.log(err)
+  //       })
+  //   }
+  //   },[url])
 
-
-  useEffect(()=>{
-    const fetchReq=async()=>{
-        const makeReq=await fetch(`/createpost`,{
-            method:"POST",
-            headers:{
-                "Content-Type":"application/json",
-                "Authorization":"Bearer "+localStorage.getItem("jwt")
-            },
-            body:JSON.stringify({
-                title,
-                body,
-                pic:url
-            })
+  useEffect(() => {
+    const fetchReq = async () => { 
+      if (title) {
+        const makeReq = await fetch(`/createpost`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("jwt"),
+          },
+          body: JSON.stringify({
+            title,
+            body,
+            pic: url,
+          }),
         });
-        const res=await makeReq.json();
-        if(res.error){
-            M.toast({html: res.error,classes:"#c62828 red darken-3"});
-        }else{
-            M.toast({html:"Created post Successfully",classes:"#43a047 green darken-1"});
-            navigate('/');
+        const res = await makeReq.json();
+        if (res.error) {
+          M.toast({ html: res.error, classes: "#c62828 red darken-3" });
+        } else {
+          M.toast({
+            html: "Created post Successfully",
+            classes: "#43a047 green darken-1",
+          });
+          navigate("/");
         }
-    }
+      }
+    };
     fetchReq();
-  },[url])
- 
+    console.log("ok");
+  }, [url]);
 
-//store images into the cloud
-  
+  //store images into the cloud
 
-const postDetails = async () => {
+  const postDetails = async () => {
     try {
       const data = new FormData();
       data.append("file", image);
@@ -84,7 +87,7 @@ const postDetails = async () => {
       const res = await makeReq.json();
       setUrl(res.url);
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
   };
 
