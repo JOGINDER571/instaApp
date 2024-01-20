@@ -80,18 +80,21 @@ const Signup = () => {
           placeholder="name"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          autoComplete="off"
         />
         <input
           type="text"
           placeholder="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          autoComplete="off"
         />
         <input
           type="password"
           placeholder="password"
           value={password}
           onChange={(e) => setPasword(e.target.value)}
+          autoComplete="off"
         />
         <div className="file-field input-field">
           <div className="btn #64b5f6 blue darken-1">
