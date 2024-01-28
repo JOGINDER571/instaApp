@@ -8,9 +8,10 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const {state,dispatch}=useContext(UserContext);
   const navigate = useNavigate();
+  const api_Url='https://insta-app-2.vercel.app/user';
   const PostData = async () => {
     try {
-      const makeReq = await fetch(`/login`, {
+      const makeReq = await fetch(`${api_Url}/login`, {
         method: "POST",
         headers: {
           "content-type": "application/json",

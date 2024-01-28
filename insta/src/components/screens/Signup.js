@@ -9,6 +9,7 @@ const Signup = () => {
   const [username, setUsername] = useState("");
   const [image, setImage] = useState("");
   const [url, setUrl] = useState(undefined);
+  const api_Url='https://insta-app-2.vercel.app/user';
   const navigate=useNavigate();
 
   useEffect(()=>{
@@ -38,7 +39,7 @@ const Signup = () => {
     }
   }
   const uploadField=async()=>{
-    const makeReq=await fetch(`/createuser`,{
+    const makeReq=await fetch(`${api_Url}/createuser`,{
       method:'POST',
       headers:{
         "content-type":"application/json"

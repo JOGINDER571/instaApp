@@ -6,9 +6,10 @@ const UserProfile = () => {
   const [userProfile,setProfile] = useState(null)
   const {state,dispatch} =useContext(UserContext);
   const [showfollow,setShowFollow] = useState(state?!state.following.includes(id):true)
+  const api_Url='https://insta-app-2.vercel.app/user';
   // console.log("st",state);
   useEffect(() => {
-    fetch(`/user/${id}`, {
+    fetch(`${api_Url}/user/${id}`, {
       headers: {
         "Authorization":"Bearer "+localStorage.getItem("jwt")
       },
@@ -24,7 +25,7 @@ const UserProfile = () => {
 
   //follow the user
   const followUser=()=>{
-    fetch(`/follow`,{
+    fetch(`${api_Url}/follow`,{
         method:"PUT",
         headers:{
             "content-type": "application/json",
@@ -52,7 +53,7 @@ const UserProfile = () => {
   }
   //UNFOLLOW 
   const unfollowUser=()=>{
-    fetch('/unfollow',{
+    fetch(`${api_Url}/unfollow`,{
         method:"put",
         headers:{
             "Content-Type":"application/json",

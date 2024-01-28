@@ -6,8 +6,9 @@ const UserFollowing = () => {
 
   const [data,setData] =useState([]);
   const {state,dispatch}=useContext(UserContext);
+  const api_Url='https://insta-app-2.vercel.app/user';
   useEffect(()=>{
-    fetch("/getsubpost",{
+    fetch(`${api_Url}/getsubpost`,{
       method:"GET",
       headers:{
         "Authorization":"Bearer "+localStorage.getItem("jwt")
@@ -23,7 +24,7 @@ const UserFollowing = () => {
 
   //like the post
   const likePost=(id)=>{
-    fetch("/like",{
+    fetch(`${api_Url}/like`,{
       method:"put",
       headers:{
         "content-type":"application/json",
@@ -46,7 +47,7 @@ const UserFollowing = () => {
   }
   //unlike the post
   const unlikePost=(id)=>{
-    fetch("/unlike",{
+    fetch(`${api_Url}/unlike`,{
       method:"put",
       headers:{
         "content-type":"application/json",
@@ -69,7 +70,7 @@ const UserFollowing = () => {
   }
   //comments
   const makeComment=(text,id)=>{
-    fetch("/comment",{
+    fetch(`${api_Url}/comment`,{
       method:"put",
       headers:{
         "content-type":"application/json", 
@@ -92,7 +93,7 @@ const UserFollowing = () => {
   }
   //delete post
   const deletePost=(id)=>{
-    fetch(`/deletepost/${id}`,{
+    fetch(`${api_Url}/deletepost/${id}`,{
       method:"delete",
       headers:{
         "Authorization":"Bearer "+localStorage.getItem("jwt")

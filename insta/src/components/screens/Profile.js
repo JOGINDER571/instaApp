@@ -4,10 +4,10 @@ const Profile = () => {
   const [mypics, setPics] = useState([]);
   const {state,dispatch} =useContext(UserContext);
   const [image,setImage]=useState("");
-  console.log("st",state);
+  const api_Url='https://insta-app-2.vercel.app/user';
 
   useEffect(() => {
-    fetch("/mypost", {
+    fetch(`${api_Url}/mypost`, {
       headers: {
         "Authorization":"Bearer "+localStorage.getItem("jwt")
       },
@@ -36,7 +36,7 @@ const Profile = () => {
         }
       ).then(res=>res.json()).then(data=>{
         //
-        fetch("/updatepic",{
+        fetch(`${api_Url}/updatepic`,{
           method:"put",
           headers:{
             "Content-Type":"application/json",

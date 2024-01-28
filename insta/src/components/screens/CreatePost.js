@@ -8,6 +8,7 @@ const CretePost = () => {
   const [image, setImage] = useState("");
   const [url, setUrl] = useState("");
   const navigate = useNavigate();
+  const api_Url='https://insta-app-2.vercel.app/user';
 
   //   useEffect(()=>{
   //      if(url){
@@ -41,7 +42,7 @@ const CretePost = () => {
   useEffect(() => {
     const fetchReq = async () => { 
       if (title) {
-        const makeReq = await fetch(`/createpost`, {
+        const makeReq = await fetch(`${api_Url}/createpost`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
