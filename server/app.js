@@ -3,6 +3,7 @@ import dotENV from "dotenv";
 import startServer from "./server.js";
 import router from "./routes/rootRouter.js";
 import bodyParser from "body-parser";
+import cors from 'cors';
 const app=express();
 
 app.use(express.json());
